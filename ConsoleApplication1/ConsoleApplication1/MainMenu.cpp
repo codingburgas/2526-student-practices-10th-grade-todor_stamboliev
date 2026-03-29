@@ -1,13 +1,33 @@
 #include <iostream>
-#include <fstream>
-using namespace std;
+#include "mainmenu.h" 
 
-void print()
-{
-	cout << ifstream("MainMenu.txt").rdbuf();
-}
+int main() {
+    int choice = -1;
 
-int main()
-{
-	print();
+    while (choice != 0) {
+        std::cout << "\n========================================";
+        std::cout << "\n     MOVIE TICKET BOOKING SYSTEM";
+        std::cout << "\n========================================";
+        std::cout << "\n  1. SEARCH MOVIES";
+        std::cout << "\n  2. BOOK TICKETS";
+        std::cout << "\n  3. ADMIN PANEL";
+        std::cout << "\n  0. EXIT";
+        std::cout << "\n========================================";
+        std::cout << "\nENTER CHOICE: ";
+
+        if (!(std::cin >> choice)) {
+            std::cin.clear();   
+            std::cin.ignore(1000, '\n');
+            continue;
+        }
+
+        switch (choice) {
+        case 1: searchMovies(); break;
+        case 2: makeBooking();  break;
+        case 3: adminPanel();   break;
+        case 0: std::cout << "Goodbye!\n"; break;
+        default: std::cout << "Invalid option!\n"; break;
+        }
+    }
+    return 0;
 }
