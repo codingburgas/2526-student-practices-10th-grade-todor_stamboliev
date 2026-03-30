@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "mainmenu.h" 
 
 int main() {
@@ -16,11 +17,12 @@ int main() {
         std::cout << "\nENTER CHOICE: ";
 
         if (!(std::cin >> choice)) {
-            std::cin.clear();   
+            std::cin.clear();
             std::cin.ignore(1000, '\n');
+            system("cls"); 
             continue;
         }
-
+        system("cls");
         switch (choice) {
         case 1: searchMovies(); break;
         case 2: makeBooking();  break;
@@ -28,6 +30,12 @@ int main() {
         case 0: std::cout << "Goodbye!\n"; break;
         default: std::cout << "Invalid option!\n"; break;
         }
+
+        if (choice != 0) {
+            std::cout << "\n";
+            system("pause");
+            system("cls"); 
+        }
     }
-    return 0;
 }
+
