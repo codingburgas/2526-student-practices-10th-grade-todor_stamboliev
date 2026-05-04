@@ -1,7 +1,12 @@
 #include <iostream>
-#include "mainmenu.h"
+#include <string>
+#include "cinema.h"
 
-void adminPanel()
-{
-	std::cout << "This is the Admin Panel. You can manage movies and bookings here.";
+void adminPanel() {
+    std::string newTitle;
+    std::cout << "Enter movie title to add: ";
+    std::getline(std::cin >> std::ws, newTitle); 
+
+    movieDatabase.push_back({ newTitle });
+    std::cout << "Movie added successfully!\n";
 }
