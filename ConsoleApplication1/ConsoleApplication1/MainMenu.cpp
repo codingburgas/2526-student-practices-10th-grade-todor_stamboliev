@@ -1,9 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include "mainmenu.h" 
-#include "cinema.h"
-
-std::vector<Movie> movieDatabase;
 
 int main() {
     int choice = -1;
