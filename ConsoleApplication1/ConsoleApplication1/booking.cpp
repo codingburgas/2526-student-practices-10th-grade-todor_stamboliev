@@ -30,3 +30,15 @@ void makeBooking() {
         std::cout << "--------------------------\n";
     }
 }
+void deleteMovieFromList(std::string titleToDelete) {
+    for (size_t i = 0; i < movieDatabase.size(); i++) 
+    {
+        if (movieDatabase[i].title == titleToDelete) 
+        {
+            movieDatabase.erase(movieDatabase.begin() + i);
+            std::cout << "\nMovie deleted successfully!\n";
+            return; 
+        }
+    }
+    std::cout << "\nMovie not found.\n";
+}
