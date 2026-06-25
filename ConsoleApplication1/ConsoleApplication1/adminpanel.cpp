@@ -1,49 +1,21 @@
-#include <iostream>
-#include <string>
+#include "raylib.h"
 #include "mainmenu.h"
 
-void adminPanel() {
-    int choice;
-    std::cout << "\n--- Admin Panel ---\n";
-    std::cout << "1. Add Movie\n";
-    std::cout << "2. Delete Movie\n";
-    std::cout << "3. Back to Main Menu\n";
-    std::cout << "Enter choice: ";
-    std::cin >> choice;
-    if (choice == 1) {
-        std::string title, genre;
-        int duration, year;
+void drawAdminPanel(int& currentState) {
+    DrawRectangle(0, 0, 800, 140, DARKGRAY);
+    DrawText("ADMIN PANEL", 300, 50, 36, LIGHTGRAY);
 
-        std::cout << "\n--- Add Movie ---\n";
-        std::cout << "Title: ";
-        std::getline(std::cin >> std::ws, title);
+    DrawText("Admin options will appear here.", 240, 250, 20, DARKGRAY);
 
-        std::cout << "Genre: ";
-        std::getline(std::cin >> std::ws, genre);
+    Rectangle backBtn = { 250, 450, 300, 50 };
+    bool isHovered = CheckCollisionPointRec(GetMousePosition(), backBtn);
 
-        std::cout << "Duration (in minutes): ";
-        std::cin >> duration;
+    DrawRectangleRec(backBtn, isHovered ? MAROON : GRAY);
 
-        std::cout << "Release Year: ";
-        std::cin >> year;
+    int textWidth = MeasureText("BACK TO MAIN MENU", 20);
+    DrawText("BACK TO MAIN MENU", backBtn.x + (backBtn.width - textWidth) / 2, backBtn.y + 15, 20, WHITE);
 
-        addMovieToList(title.c_str(), genre.c_str(), duration, year);
-        std::cout << "\nMovie '" << title << "' added successfully!\n";
-
-    }
-    else if (choice == 2) {
-        std::string toDelete;
-        std::cout << "\n--- Delete Movie ---\n";
-        std::cout << "Enter the title of the movie to delete: ";
-        std::getline(std::cin >> std::ws, toDelete);
-        deleteMovieFromList(toDelete); 
-
-    }
-    else if (choice == 3) {
-        std::cout << "\nReturning to main menu...\n";
-        return;
-    }
-    else {
-        std::cout << "\nInvalid choice!\n";
+    if (isHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        currentState = 0;
     }
 }
