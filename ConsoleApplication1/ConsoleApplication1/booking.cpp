@@ -17,20 +17,37 @@ void deleteMovieFromList(std::string titleToDelete) {
 }
 
 void drawBookingPanel(int& currentState) {
-    DrawRectangle(0, 0, 800, 140, DARKGRAY);
-    DrawText("BOOK TICKETS", 300, 50, 36, LIGHTGRAY);
+    Vector2 mousePos = GetMousePosition();
 
-    DrawText("Booking options will appear here.", 240, 250, 20, DARKGRAY);
+    DrawRectangle(0, 0, 800, 100, DARKGRAY);
+    DrawText("AVAILABLE MOVIES FOR BOOKING", 200, 35, 26, LIGHTGRAY);
 
-    Rectangle backBtn = { 250, 450, 300, 50 };
-    bool isHovered = CheckCollisionPointRec(GetMousePosition(), backBtn);
+    if (movieDatabase.empty()) {
+        DrawText("No movies available for booking.", 250, 250, 20, DARKGRAY);
+    }
+    else {
+        int startY = 130;
+        for (size_t i = 0; i < movieDatabase.size(); i++) {
+            DrawRectangle(50, startY, 700, 70, LIGHTGRAY);
+            DrawRectangleLines(50, startY, 700, 70, DARKGRAY);
 
-    DrawRectangleRec(backBtn, isHovered ? MAROON : GRAY);
+            DrawText(TextFormat("Title: %s", movieDatabase[i].title.c_str()), 70, startY + 15, 18, BLACK);
+            DrawText(TextFormat("Genre: %s", movieDatabase[i].genre.c_str()), 70, startY + 40, 14, DARKGRAY);
+            DrawText(TextFormat("Year: %d", movieDatabase[i].year), 450, startY + 15, 14, DARKGRAY);
+            DrawText(TextFormat("Duration: %d min", movieDatabase[i].duration), 450, startY + 40, 14, DARKGRAY);
 
+            startY += 85;
+            if (startY > 440) break;
+        }
+    }
+
+    Rectangle backBtn = { 250, 500, 300, 50 };
+    bool hoverBack = CheckCollisionPointRec(mousePos, backBtn);
+    DrawRectangleRec(backBtn, hoverBack ? BLACK : DARKGRAY);
     int textWidth = MeasureText("BACK TO MAIN MENU", 20);
     DrawText("BACK TO MAIN MENU", backBtn.x + (backBtn.width - textWidth) / 2, backBtn.y + 15, 20, WHITE);
 
-    if (isHovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (hoverBack && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         currentState = 0;
     }
 }
