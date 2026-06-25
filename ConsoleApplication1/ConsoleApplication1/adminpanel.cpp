@@ -1,4 +1,4 @@
-#include "raylib.h"
+﻿#include "raylib.h"
 #include "mainmenu.h"
 #include <cstring>
 #include <cstdlib>
@@ -76,9 +76,23 @@ void drawAdminPanel(int& currentState) {
 
     if (hoverAdd && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         if (strlen(titleBuf) > 0 && strlen(genreBuf) > 0) {
-            addMovieToList(titleBuf, genreBuf, atoi(durationBuf), atoi(yearBuf));
-            statusMessage = "Movie added successfully!";
-            titleBuf[0] = genreBuf[0] = durationBuf[0] = yearBuf[0] = '\0';
+            bool alreadyExists = false;
+            for (const auto& movie : movieDatabase) {
+                if (movie.title == titleBuf) {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+
+            if (alreadyExists) {
+                statusMessage = "Error: Movie already exists!";
+            }
+            else {
+                addMovieToList(titleBuf, genreBuf, atoi(durationBuf), atoi(yearBuf));
+                statusMessage = "Movie added successfully!";
+                titleBuf[0] = genreBuf[0] = durationBuf[0] = yearBuf[0] = '\0';
+            }
+
         }
         else {
             statusMessage = "Error: Fill all fields!";
