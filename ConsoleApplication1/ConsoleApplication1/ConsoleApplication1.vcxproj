@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="adminpanel.cpp" />
     <ClCompile Include="booking.cpp" />
+    <ClCompile Include="login.cpp" />
     <ClCompile Include="searchmovies.cpp" />
     <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>

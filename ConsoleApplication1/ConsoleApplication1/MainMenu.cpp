@@ -15,17 +15,24 @@ int main() {
     SetTargetFPS(60);
 
     int currentState = 0;
+    float securityMessageTimer = 0.0f;
 
     Button buttons[] = {
-        { { 250, 220, 300, 50 }, "1. SEARCH MOVIES", 1, false },
-        { { 250, 300, 300, 50 }, "2. BOOK TICKETS", 2, false },
-        { { 250, 380, 300, 50 }, "3. ADMIN PANEL", 3, false },
+        { { 250, 180, 300, 50 }, "1. SEARCH MOVIES", 1, false },
+        { { 250, 250, 300, 50 }, "2. BOOK TICKETS", 2, false },
+        { { 250, 320, 300, 50 }, "3. ADMIN PANEL", 3, false },
+        { { 250, 390, 300, 50 }, "4. LOGIN", 4, false },
         { { 250, 460, 300, 50 }, "0. EXIT", 0, true }
     };
     int buttonCount = sizeof(buttons) / sizeof(buttons[0]);
 
     while (!WindowShouldClose()) {
+        float deltaTime = GetFrameTime();
         Vector2 mousePos = GetMousePosition();
+
+        if (securityMessageTimer > 0.0f) {
+            securityMessageTimer -= deltaTime;
+        }
 
         if (currentState == 0) {
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -34,7 +41,13 @@ int main() {
                         if (buttons[i].isExit) {
                             goto close;
                         }
-                        currentState = buttons[i].targetState;
+
+                        if (buttons[i].targetState == 3 && currentUserRole != ROLE_ADMIN) {
+                            securityMessageTimer = 3.0f;
+                        }
+                        else {
+                            currentState = buttons[i].targetState;
+                        }
                         break;
                     }
                 }
@@ -63,9 +76,24 @@ int main() {
                 int textY = buttons[i].rect.y + (buttons[i].rect.height - 20) / 2;
                 DrawText(buttons[i].text, textX, textY, 20, WHITE);
             }
+
+            if (securityMessageTimer > 0.0f) {
+                const char* alert = "ACCESS REJECTED: Admin account verification required!";
+                int textW = MeasureText(alert, 16);
+                DrawText(alert, (screenWidth - textW) / 2, 530, 16, RED);
+            }
+
+            if (currentUserRole != ROLE_GUEST) {
+                std::string statusText = "Active User: " + std::string(currentUserRole == ROLE_ADMIN ? "Admin" : "Customer");
+                DrawText(statusText.c_str(), 15, 150, 14, DARKGREEN);
+            }
+        }
+        else if (currentState == 4) {
+            drawLoginPanel(currentState);
         }
         else if (currentState == 3) {
-            drawAdminPanel(currentState);
+            if (currentUserRole != ROLE_ADMIN) currentState = 0;
+            else drawAdminPanel(currentState);
         }
         else if (currentState == 2) {
             drawBookingPanel(currentState);
