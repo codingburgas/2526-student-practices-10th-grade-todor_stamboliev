@@ -16,3 +16,4 @@ void deleteMovieFromList(std::string titleToDelete);
 void drawAdminPanel(int& currentState);
 void drawBookingPanel(int& currentState);
 void drawLoginPanel(int& currentState);
+void drawSearchBookingPanel(int& currentState);

@@ -122,7 +122,7 @@ void drawLoginPanel(int& currentState) {
     DrawText("SYSTEM SIGN-IN PORTAL", (800 - titleWidth) / 2, 50, 34, LIGHTGRAY);
 
     DrawText("Email:", usernameField.bounds.x, usernameField.bounds.y - 22, 16, DARKGRAY);
-    DrawText("Password (use '1234'):", passwordField.bounds.x, passwordField.bounds.y - 22, 16, DARKGRAY);
+    DrawText("Password:", passwordField.bounds.x, passwordField.bounds.y - 22, 16, DARKGRAY);
 
     DrawRectangleRec(usernameField.bounds, LIGHTGRAY);
     DrawRectangleLinesEx(usernameField.bounds, 2, usernameField.isFocused ? MAROON : GRAY);

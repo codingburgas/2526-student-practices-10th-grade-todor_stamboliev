@@ -1,4 +1,5 @@
 ﻿#include "raylib.h"
+#include "raylib.h"
 #include "mainmenu.h"
 
 struct Button {
@@ -99,7 +100,7 @@ int main() {
             drawBookingPanel(currentState);
         }
         else if (currentState == 1) {
-            currentState = 0;
+            drawSearchBookingPanel(currentState);
         }
 
         EndDrawing();
