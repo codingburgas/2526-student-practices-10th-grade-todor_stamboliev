@@ -18,6 +18,7 @@ static std::string loginErrorMessage = "";
 void drawLoginPanel(int& currentState) {
     Vector2 mousePos = GetMousePosition();
     Rectangle backBtn = { 410, 390, 140, 40 };
+    bool mouseClicked = IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 
     if (currentUserRole != ROLE_GUEST) {
         DrawRectangle(0, 0, 800, 140, DARKGRAY);
@@ -38,7 +39,7 @@ void drawLoginPanel(int& currentState) {
         int backTextW = MeasureText("BACK", 18);
         DrawText("BACK", backBtn.x + (backBtn.width - backTextW) / 2, backBtn.y + 11, 18, WHITE);
 
-        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        if (mouseClicked) {
             if (CheckCollisionPointRec(mousePos, logoutBtn)) {
                 currentUserRole = ROLE_GUEST;
                 loginErrorMessage = "";
@@ -50,7 +51,7 @@ void drawLoginPanel(int& currentState) {
         return;
     }
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (mouseClicked) {
         usernameField.isFocused = CheckCollisionPointRec(mousePos, usernameField.bounds);
         passwordField.isFocused = CheckCollisionPointRec(mousePos, passwordField.bounds);
     }
@@ -81,7 +82,7 @@ void drawLoginPanel(int& currentState) {
     Rectangle loginBtn = { 250, 390, 140, 40 };
     bool loginTriggered = false;
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+    if (mouseClicked) {
         if (CheckCollisionPointRec(mousePos, loginBtn)) loginTriggered = true;
         if (CheckCollisionPointRec(mousePos, backBtn)) {
             usernameField.text = "";

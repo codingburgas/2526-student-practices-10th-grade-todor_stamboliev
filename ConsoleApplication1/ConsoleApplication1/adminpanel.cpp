@@ -2,6 +2,7 @@
 #include "mainmenu.h"
 #include <cstring>
 #include <cstdlib>
+#include <string>
 
 void drawAdminPanel(int& currentState) {
     static char titleBuf[32] = "\0";
@@ -12,6 +13,25 @@ void drawAdminPanel(int& currentState) {
 
     static int activeField = 0;
     static const char* statusMessage = "";
+    static bool showAdminSeats = false;
+
+    int foundMovieIdx = -1;
+    if (strlen(deleteBuf) > 0) {
+        for (size_t i = 0; i < movieDatabase.size(); i++) {
+            if (movieDatabase[i].title == std::string(deleteBuf)) {
+                foundMovieIdx = (int)i;
+                break;
+            }
+        }
+    }
+
+    if (showAdminSeats && foundMovieIdx != -1) {
+        drawAdminSeatSelection(foundMovieIdx, showAdminSeats);
+        return;
+    }
+    else if (showAdminSeats && foundMovieIdx == -1) {
+        showAdminSeats = false;
+    }
 
     Vector2 mousePos = GetMousePosition();
 
@@ -78,7 +98,7 @@ void drawAdminPanel(int& currentState) {
         if (strlen(titleBuf) > 0 && strlen(genreBuf) > 0) {
             bool alreadyExists = false;
             for (const auto& movie : movieDatabase) {
-                if (movie.title == std::string(titleBuf)) { 
+                if (movie.title == std::string(titleBuf)) {
                     alreadyExists = true;
                     break;
                 }
@@ -92,32 +112,41 @@ void drawAdminPanel(int& currentState) {
                 statusMessage = "Movie added successfully!";
                 titleBuf[0] = genreBuf[0] = durationBuf[0] = yearBuf[0] = '\0';
             }
-
         }
         else {
             statusMessage = "Error: Fill all fields!";
         }
     }
 
-    DrawText("DELETE MOVIE", 480, 110, 20, MAROON);
+    DrawText("MANAGE / DELETE MOVIE", 480, 110, 20, MAROON);
     DrawText("Title:", 400, 158, 16, DARKGRAY);
     DrawRectangleRec({ 480, 150, 200, 35 }, activeField == 5 ? LIGHTGRAY : RAYWHITE);
     DrawRectangleLines(480, 150, 200, 35, DARKGRAY);
     DrawText(deleteBuf, 490, 158, 16, BLACK);
 
-    Rectangle delBtn = { 480, 200, 200, 40 };
-    bool hoverDel = CheckCollisionPointRec(mousePos, delBtn);
-    DrawRectangleRec(delBtn, hoverDel ? MAROON : GRAY);
-    DrawText("DELETE", 550, 210, 16, WHITE);
+    if (foundMovieIdx != -1) {
+        Rectangle editSeatsBtn = { 480, 200, 200, 35 };
+        bool hoverEdit = CheckCollisionPointRec(mousePos, editSeatsBtn);
+        DrawRectangleRec(editSeatsBtn, hoverEdit ? ORANGE : GRAY);
+        DrawText("MANAGE SEATS", 530, 210, 16, WHITE);
 
-    if (hoverDel && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        if (strlen(deleteBuf) > 0) {
-            size_t before = movieDatabase.size();
+        if (hoverEdit && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            showAdminSeats = true;
+        }
+
+        Rectangle delBtn = { 480, 245, 200, 35 };
+        bool hoverDel = CheckCollisionPointRec(mousePos, delBtn);
+        DrawRectangleRec(delBtn, hoverDel ? RED : MAROON);
+        DrawText("DELETE MOVIE", 530, 255, 16, WHITE);
+
+        if (hoverDel && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
             deleteMovieFromList(deleteBuf);
-            if (movieDatabase.size() < before) statusMessage = "Movie removed successfully!";
-            else statusMessage = "Movie not found!";
+            statusMessage = "Movie removed successfully!";
             deleteBuf[0] = '\0';
         }
+    }
+    else if (strlen(deleteBuf) > 0) {
+        DrawText("Movie not found!", 480, 200, 16, RED);
     }
 
     DrawText(statusMessage, 150, 450, 18, DARKGRAY);
@@ -130,6 +159,7 @@ void drawAdminPanel(int& currentState) {
 
     if (hoverBack && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         statusMessage = "";
+        deleteBuf[0] = '\0';
         currentState = 0;
     }
 }

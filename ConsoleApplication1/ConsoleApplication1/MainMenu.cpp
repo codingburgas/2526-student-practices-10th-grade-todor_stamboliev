@@ -1,6 +1,6 @@
 ﻿#include "raylib.h"
 #include "mainmenu.h"
-#include <string> // Осигурява безпроблемна работа на std::string
+#include <string> 
 
 struct Button {
     Rectangle rect;
