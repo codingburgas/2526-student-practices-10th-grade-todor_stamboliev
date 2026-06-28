@@ -78,7 +78,7 @@ void drawAdminPanel(int& currentState) {
         if (strlen(titleBuf) > 0 && strlen(genreBuf) > 0) {
             bool alreadyExists = false;
             for (const auto& movie : movieDatabase) {
-                if (movie.title == titleBuf) {
+                if (movie.title == std::string(titleBuf)) { 
                     alreadyExists = true;
                     break;
                 }

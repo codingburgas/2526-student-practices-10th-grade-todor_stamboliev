@@ -8,7 +8,7 @@ extern std::vector<Movie> movieDatabase;
 
 static char searchQuery[50] = "\0";
 static int letterCount = 0;
-static bool boxActive = false; 
+static bool boxActive = false;
 
 bool matchesSearch(const Movie& movie, const std::string& query) {
     if (query.empty()) return true;
@@ -55,7 +55,6 @@ void drawSearchBookingPanel(int& currentState) {
     DrawText("SEARCH & BOOK MOVIES", 260, 35, 26, LIGHTGRAY);
 
     DrawText("Search:", 50, 120, 20, DARKGRAY);
-
     DrawRectangleRec(searchBox, LIGHTGRAY);
     DrawRectangleLinesEx(searchBox, 2, boxActive ? BLUE : DARKGRAY);
 
@@ -80,10 +79,10 @@ void drawSearchBookingPanel(int& currentState) {
 
             startY += 85;
             displayedMovies++;
+
             if (startY > 440) break;
         }
     }
-
     if (displayedMovies == 0) {
         if (letterCount == 0) {
             DrawText("No movies available for booking.", 250, 280, 20, DARKGRAY);

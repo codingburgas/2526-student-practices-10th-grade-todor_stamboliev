@@ -1,6 +1,6 @@
 ﻿#include "raylib.h"
-#include "raylib.h"
 #include "mainmenu.h"
+#include <string> // Осигурява безпроблемна работа на std::string
 
 struct Button {
     Rectangle rect;
@@ -14,6 +14,8 @@ int main() {
     const int screenHeight = 600;
     InitWindow(screenWidth, screenHeight, "Movie Ticket Booking System");
     SetTargetFPS(60);
+
+    loadMoviesFromFile();
 
     int currentState = 0;
     float securityMessageTimer = 0.0f;

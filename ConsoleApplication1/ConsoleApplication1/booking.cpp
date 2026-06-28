@@ -1,16 +1,52 @@
 #include "raylib.h"
 #include "mainmenu.h"
+#include <fstream> 
 
 std::vector<Movie> movieDatabase;
 
+void saveMoviesToFile() {
+    std::ofstream outFile("movies.txt");
+    if (outFile.is_open()) {
+        for (const auto& movie : movieDatabase) {
+            outFile << movie.title << "\n";
+            outFile << movie.genre << "\n";
+            outFile << movie.duration << "\n";
+            outFile << movie.year << "\n";
+        }
+        outFile.close();
+    }
+}
+
+void loadMoviesFromFile() {
+    movieDatabase.clear(); 
+    std::ifstream inFile("movies.txt");
+    if (inFile.is_open()) {
+        Movie movie;
+        std::string durationStr, yearStr;
+
+        while (std::getline(inFile, movie.title) &&
+            std::getline(inFile, movie.genre) &&
+            std::getline(inFile, durationStr) &&
+            std::getline(inFile, yearStr)) {
+
+            movie.duration = std::stoi(durationStr);
+            movie.year = std::stoi(yearStr);
+            movieDatabase.push_back(movie);
+        }
+        inFile.close();
+    }
+}
+
 void addMovieToList(const char* title, const char* genre, int duration, int year) {
     movieDatabase.push_back({ title, genre, duration, year });
+    saveMoviesToFile(); 
 }
 
 void deleteMovieFromList(std::string titleToDelete) {
     for (size_t i = 0; i < movieDatabase.size(); i++) {
         if (movieDatabase[i].title == titleToDelete) {
             movieDatabase.erase(movieDatabase.begin() + i);
+            saveMoviesToFile(); 
             return;
         }
     }
